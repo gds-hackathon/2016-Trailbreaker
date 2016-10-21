@@ -1,0 +1,13 @@
+<% include ../layout/header.html %>
+	<script src="/scripts/chartController.js"></script>
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper col-xs-10 .col-sm-4 .col-lg-6" 
+    ng-controller="ChartContorller" >
+
+		<fusioncharts width="600" height="400" type="mscombi2d" datasource="{{myDataSource}}"></fusioncharts>
+
+	
+	</div>
+	<!-- /.content -->
+
+<% include ../layout/footer.html %>
