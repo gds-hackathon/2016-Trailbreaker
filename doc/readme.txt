@@ -21,6 +21,7 @@ API:
 [DONE] /api/employee/:employee_key
 [DONE] /api/employee/:employee_token
 [DONE] /api/employee/wechat_id/:wechat_id
+[DONE] /api/employee/updatestatus
 /api/transaction
 
 
