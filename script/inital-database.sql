@@ -421,6 +421,43 @@ null,
 3,
 1);
 
+INSERT INTO `hackathon`.`employee_limit`
+(`employee_key`,
+`max_amount`,
+`max_count`,
+`limit_period_key`,
+`is_enabled`)
+VALUES
+(2,
+500,
+null,
+1,
+1);
+INSERT INTO `hackathon`.`employee_limit`
+(`employee_key`,
+`max_amount`,
+`max_count`,
+`limit_period_key`,
+`is_enabled`)
+VALUES
+(2,
+500,
+null,
+2,
+1);
+INSERT INTO `hackathon`.`employee_limit`
+(`employee_key`,
+`max_amount`,
+`max_count`,
+`limit_period_key`,
+`is_enabled`)
+VALUES
+(2,
+500,
+null,
+3,
+1);
+
 
 -- user
 INSERT INTO `hackathon`.`user`
