@@ -13,7 +13,7 @@ router.get('/report', function(req, res, next) {
 router.get('/pages/registration', function(req, res, next) {
   res.render('registration', { title: 'Customer Registration' });
 });
-router.get('/pages/transaction', function(req, res, next) {
+router.get('/pages/transaction/wechat_id/:wechat_id/:transaction_id', function(req, res, next) {
   res.render('transaction', { title: 'Transaction' });
 });
 

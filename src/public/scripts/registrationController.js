@@ -6,7 +6,7 @@ function RegistrationContorller($scope,$http,$window) {
         $http.post("/api/employee/register/"+getQueryVariable("wechat_id")+location.search,$scope.registration )
         .success(function (response) {
             console.log(response);
-            if(response.employee_key!=0)
+            if(response.employee_key)
             {
             var landingUrl="/pages/transaction/wechat_id/"+getQueryVariable("wechat_id")+"/"+response.employee_key+location.search;
             $window.location.href = landingUrl
