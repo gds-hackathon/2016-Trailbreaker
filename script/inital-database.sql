@@ -1,6 +1,6 @@
 -- create database hackathon;
 
--- grant all privileges on hackathon.* to "slin"@"%" identified by 'DBPa$$w0rd';
+-- grant all privileges on hackathon.* to "hackathon"@"%" identified by 'hackath0n!';
 
 -- use hackathon;
 
