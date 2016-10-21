@@ -5,16 +5,27 @@ var service = new (require('../../biz/transactionService'))();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    service.getTransaactions(req, function(err, rows){
-        console.log(rows);
+    service.findAll(req, function(err, rows){
+        //console.log(rows);
 
         if(rows){
-            res.render('admin/employees/index', { title: 'employees', data: rows });
+            res.send(rows);
         }else{
-            res.render('error', { title: 'Express', error: err});
+            res.send(null);
         }
    });
+});
 
+router.get('/:transaction_key(\\d+)', function(req, res, next) {
+    service.find(req, function(err, row){
+        //console.log(row);
+
+        if(row){
+            res.send(row);
+        }else{
+            res.send(null);
+        }
+   });
 });
 
 
