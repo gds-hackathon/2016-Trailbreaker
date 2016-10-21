@@ -1,2 +1,2 @@
 
-var app = angular.module('trailbreakerApp',["ng-fusioncharts"]);
+var app = angular.module('trailbreakerApp',[]);
