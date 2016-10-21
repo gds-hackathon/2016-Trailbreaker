@@ -2,7 +2,7 @@
 
 -- grant all privileges on hackathon.* to "hackathon"@"%" identified by 'hackath0n!';
 
--- use hackathon;
+use hackathon;
 
 
 create table `employees` (
@@ -12,3 +12,6 @@ create table `employees` (
     change_date datetime,
     change_by varchar(50)
 );
+
+insert into `employees` (employee_name, create_date, change_date, change_by)
+values('sam', now(), now(), 'admin');
