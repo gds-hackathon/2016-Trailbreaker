@@ -1,5 +1,5 @@
 /**
- * userService
+ * employeeService
  */
 
 var pool = require('../helpers/dbHelper')();
