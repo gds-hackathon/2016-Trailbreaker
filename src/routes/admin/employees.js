@@ -5,7 +5,7 @@ var service = new (require('../../biz/employeeService'))();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    service.getEmpolyees(req, function(err, rows){
+    service.findAll(req, function(err, rows){
         console.log(err);
         //console.log(rows);
 
