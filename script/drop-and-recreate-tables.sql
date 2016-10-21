@@ -20,7 +20,7 @@ create table `coupon` (
 	coupon_key int auto_increment key,
     coupon_type_key int,
     content varchar(50),
-    is_enabled bit,
+    is_enabled tinyint,
 	create_date datetime,
     change_date datetime,
     change_by varchar(50)
@@ -71,7 +71,7 @@ create table `employee` (
     employee_token nvarchar(10),
     wechat_id nvarchar(50),
     is_approved bit,
-    is_enabled bit,
+    is_enabled tinyint,
     approved_date datetime,
     create_date datetime,
     change_date datetime,
@@ -87,10 +87,11 @@ create table `vendor` (
     vendor_token nvarchar(10),
     vendor_address nvarchar(100),
     coupon_key int,
+    discount decimal(2,2),
     phone varchar(11),
     email_address nvarchar(50),
     encrypted_security_token nvarchar(100),
-    is_enabled bit,
+    is_enabled tinyint,
     create_date datetime,
     change_date datetime,
     change_by varchar(50)
@@ -121,7 +122,7 @@ create table `employee_limit` (
     max_amount decimal(7,2),
     max_count int,
     limit_period_key int,
-    is_enabled bit
+    is_enabled tinyint
 );
 
 
@@ -134,5 +135,5 @@ create table `user`(
     phone char(11),
     email_address varchar(50),
     user_password nvarchar(50),
-    is_enabled bit
+    is_enabled tinyint
 );
