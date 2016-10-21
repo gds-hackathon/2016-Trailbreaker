@@ -17,6 +17,7 @@ var employees = require('./routes/admin/employees');
 var apiVendor = require('./routes/api/vendor');
 var apiEmployee = require('./routes/api/employee');
 var apiTransaction = require('./routes/api/transaction');
+//var apiTransactionConfirm = require('./routes/api/transactionConfirm');
 
 var app = express();
 
@@ -43,7 +44,7 @@ app.use(function(req, res, next){
    //console.log(appConfig.BASE_URL);
    next();
 });
-app.use('/pages/', checkSignature);
+// app.use('/pages/', checkSignature);
 app.use('/wechat/gd/api', wechatHandler);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -56,6 +57,7 @@ app.use('/admin/employees', employees);
 
 app.use('/api/vendor', apiVendor);
 app.use('/api/employee', apiEmployee);
+app.use('/api/transaction',apiTransaction);
 app.use('/api/transaction',apiTransaction);
 //app.use('/api/transaction', transaction);
 

@@ -7,29 +7,40 @@ var VenderService = require('./vendorService');
 var EmployeeService = require('./employeeService');
 var EmployeeLimitService = require('./employeeLimitService')
 
-var transactions = [   
-];
+var __sqlstr = 'select t.*,e.wechat_id, e.first_name, e.last_name, ts.transaction_status, tsr.content from `transaction` t'
+        + ' INNER JOIN `employee` e on e.employee_key = t.employee_key ' 
+        + ' INNER JOIN transaction_status ts on t.transaction_status_key = ts.transaction_status_key '
+        + ' LEFT JOIN transaction_status_resone tsr on t.transaction_status_resone_key = tsr.transaction_status_resone_key '
+        + ' where 1=1';
 
 
 function transactionService(){
     
-    this.getTransactions = function(req, callback){
-        pool.query('select * from transactions', function(err, rows){
+    this.findAll = function(req, callback){
+        var cmd = __sqlstr;
+        var params = [];
+        if(req.params.transaction_key) {
+            cmd += ' and t.transaction_key = ?';
+            params.push(req.params.transaction_key);
+        }
+
+        if(req.params.wechat_id) {
+            cmd += ' and e.wechat_id = ?';
+            params.push(req.params.wechat_id);
+        }
+        //console.log(cmd);
+        pool.query(cmd, params, function(err, rows){
             // console.log(rows);
             // console.log(err);            
             callback(err, rows);
         });
     };
 
-    this.getTransaction = function(req, callback){
-        // console.log('transaction_id: ' + req.params.transaction_id);
+    this.find = function(req, callback){
+        console.log('transaction_key: ' + req.params.transaction_key);
         // console.log('vendor_id: ' + req.params.vendor_id);
-        var params = [];
-        params.push(req.params.employee_id);
-        pool.query('select * from transactions where vendor_id = ? and transaction_id=?', params, function(err, rows){
-            //console.log(rows);
-            // console.log(err);
-            callback(err, rows == null? null : rows[0]);
+        this.findAll(req, function(err, rows){
+            callback(err, (rows == null || rows.length == 0)? null : rows[0])
         });
     }
     

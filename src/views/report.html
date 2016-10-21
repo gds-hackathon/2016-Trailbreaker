@@ -1,6 +1,28 @@
-<% include ./layout/header.html %>
-<div ng-controller="ReportContorller">
-{{title}}
+<html ng-app="HelloApp">
+    <head>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="/scripts/reportContorller.js"></script>
+<!--<script src="//static.fusioncharts.com/code/latest/fusioncharts.js?cacheBust=823"></script>
+<script src="//fusioncharts.github.io/angular-fusioncharts/demos/js/angular-fusioncharts.min.js"></script>-->
 
+<script src="/fusioncharts/fusioncharts.js"></script>
+<script src="/dist/js/angular-fusioncharts.js"></script>
+    </head>
+<body ng-controller="ReportContorller">
+<div style="background-color:#00FF00">
+ <fusioncharts 
+    id="mychartcontainer"
+    chartid="mychart"
+    width="{{width}}" 
+    height="400"
+    type="{{type}}"
+   dataSource="{{dataSource}}"
+   config="{{chartoptions}}"
+   
+    ></fusioncharts>
+    {{dataSource}}
+    <input type="button" ng-click="changeOpacity()" value="Change Chart's BG-Opacity"/>
+    <input type="button" ng-click="changeWidth()" value="Change Width"/>
 </div>
-<% include ./layout/footer.html %>
+</body>
+</html>

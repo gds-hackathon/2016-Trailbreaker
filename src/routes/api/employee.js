@@ -77,14 +77,17 @@ router.get('/', function(req, res, next) {
 router.post('/register/:wechat_id', function(req, res, next) {
     // console.log('register');
     // console.log(req.body);
-    if(!req.params.wechat_id) throw new Error('Invalid parameter');
+    if(!req.params.wechat_id) {
+        res.send({status: 99, message: 'invalid parameter', errors: ['wechat_id', 'wechat_id is required']});
+        return;
+    }
     // console.log('req.body: ' + JSON.stringify(req.body));
     // console.log(req.body);
 
     service.register(req, function(err, rows){
         if(err){
             console.log(err);
-            res.send({status: 1, message: null})
+            res.send({status: 1, message: err.message, errors: err.errors})
         }else{
             res.send(rows);
         }
@@ -95,7 +98,7 @@ router.post('/register/:wechat_id', function(req, res, next) {
 
 router.post('/updatestatus', function(req, res, next) {
     // console.log('register');
-    console.log(req.body);
+    //console.log(req.body);
     if(!req.body.employee_key) throw new Error('Invalid parameter');
     if(typeof req.body.is_approved === undefined || req.body.is_approved == null) throw new Error('Invalid parameter');
     // console.log('req.body: ' + JSON.stringify(req.body));

@@ -65,9 +65,13 @@ function employeeService(){
     this.register = function(req, callback){
         console.log('wechat_id: ' + req.params.wechat_id);
         this.findAll(req, function(err, rows){
-            console.log(rows);
+            //console.log(rows);
             if(rows && rows.length > 0){
-                callback(new Error('already registered'), rows[0]);
+                callback({
+                    status: 1,
+                    message: 'already registered',
+                    errors : []
+                }, rows[0]);
             }else{
                 
                 var cmd = 'INSERT INTO `employee` (`first_name`,`last_name`,`phone`,`email_address`,`employee_id`,`employee_token`,`wechat_id`,`is_approved`,`is_enabled`,'
@@ -77,12 +81,14 @@ function employeeService(){
 
                 var params = [];
 
+                var token = guid().toUpperCase().replace(/-/g, '').substr(0, 10);                
+
                 params.push(req.body.first_name);
                 params.push(req.body.last_name);
                 params.push(req.body.phone);
                 params.push(req.body.email_address);
                 params.push(req.body.employee_id);
-                params.push(req.body.employee_token);
+                params.push(token);
                 params.push(req.params.wechat_id);
 
                 var errors = [];
