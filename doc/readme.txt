@@ -21,11 +21,15 @@ then visit http://localhost:<PORT:default is 3000>
 [DONE] [GET]        /api/employee/wechat_id/:wechat_id
 [DONE] [POST]       /api/employee/updatestatus
 [DONE] [GET|POST]   /api/transaction
+[DONE] [GET]        /api/transaction/:transaction_key
+[DONE] [GET]        /api/transaction/wechat_id/:wechat_id/:transaction_key
 
 ==PAGES==
 NOTE: URL starts with /pages/ will get signature valiation.
-[DONE] [GET]        /pages/registration
-[DONE] [GET]        /pages/transaction
+[DONE] [GET]        /pages/registration?wechat_id=<wechat_id>&...
+[DONE] [GET]        /pages/transaction?wechat_id=<wechat_id>&...
+[DONE] [GET]        /pages/transaction/wechat_id/:wechat_id/:transaction_key?wechat_id=<wechat_id>&...
+[DONE] [GET]        /pages/transaction/qrcode/wechat_id/:wechat_id/:transaction_key?wechat_id=<wechat_id>&...
 
 ==ADMIN PORTAL==
 /admin
