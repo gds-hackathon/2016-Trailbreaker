@@ -4,6 +4,7 @@
 //TODO
 var pool = require('../helpers/dbHelper')();
 var VenderService = require('./vendorService');
+var EmployeeService = require('./employeeService')
 
 var transactions = [   
 ];
@@ -50,7 +51,7 @@ function transactionService(){
             //console.log('get :' + discount);
             var paid_amount = req.body.request_amount * (1 - discount);
 
-            console.log('paid_amount' + paid_amount);
+            //console.log('paid_amount' + paid_amount);
             var cmd = 'INSERT INTO `transaction`' +
                 '(`employee_key`,' +
                 '`attendances`,' +
@@ -87,14 +88,36 @@ function transactionService(){
                 var error = new Error('invalid parameters');
                 error.errors = errors;  
 
-                callback(error, {status:0, message:'invalid parameters'});                    
-            }else{
+                callback(error, {status:1, message:'invalid parameters'});                    
+            }
+            else if(!row.is_enabled)
+            {
+                var error = new Error('invalid status');
+                error.errors = errors;  
+
+                callback(error, {status:1, message:'vender is disabled'});  
+            }
+            else{
 
                 //TODO validate employee/vendor/coupon status && check limit
+                var employee  = new EmployeeService();
 
-                pool.query(cmd, params, function(insertErr, data){
-                    //console.log(data);
-                    callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
+                employee.find({'params':{'employee_key':req.body.employee_key}}, function(err,row){
+                    //console.log('is_enabled' + row.is_enabled)
+                    if(row.is_enabled != 1 )
+                    {
+                        var error = new Error('invalid status');
+                        error.errors = errors;  
+
+                        callback(error, {status:1, message:'employee is disabled'});  
+                    }
+                    else{
+
+                        pool.query(cmd, params, function(insertErr, data){
+                            //console.log(data);
+                            callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
+                        });
+                    }
                 });
             }
         })
