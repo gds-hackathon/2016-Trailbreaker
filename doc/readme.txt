@@ -15,6 +15,7 @@ PAGES:
 /admin/employees
 
 API:
+[DONE] /api/vendor
 /api/transaction
 
 
