@@ -41,6 +41,27 @@ function employeeService(){
         });
     }
 
+    this.updatestatus = function(req, callback){
+        //todo authentication.
+        var errors = [];
+        if(!req.body.employee_key){
+            callback(new Error('employee_key is required'), null);
+            return;       
+        }
+
+        //TODO validation 
+        var params = [];
+        params.push(!! req.body.is_approved);
+        params.push(!! req.body.is_enabled);
+        params.push(req.body.employee_key);
+
+        var cmd = 'update employee set is_approved=?, is_enabled = ?, change_date = now(), change_by= user() where employee_key = ?';
+        
+        pool.query(cmd, params, function(err, rows){
+            callback(err, rows);
+        });
+    };
+
     this.register = function(req, callback){
         console.log('wechat_id: ' + req.params.wechat_id);
         this.findAll(req, function(err, rows){

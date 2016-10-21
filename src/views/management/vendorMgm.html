@@ -1,9 +1,60 @@
 <% include ./layout/header.html %>
-	<script src="scripts/mgmController.js"></script>
+	<script src="/scripts/vendorController.js"></script>
 	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper" ng-controller="MgmContorller">
-		vendor management
-	</div>
-	<!-- /.content
+	<div class="content-wrapper col-xs-10 .col-sm-4 .col-lg-6" ng-controller="VendorController">
 
-<% include ./layout/footer.html %>
+		<div class=""><input ng-model="searchText" st-search="" class="form-control" placeholder="global search ..." type="text" /></div>
+		<table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+			<thead>
+				<tr>
+					<th st-sort="Name">Name</th>
+					<th st-sort="Token">Token</th>
+					<th st-sort="Address">Address</th>
+					<th st-sort="Discount">Discount</th>
+					<th st-sort="Phone">Phone</th>
+					<th st-sort="Email">Email</th>
+					<th st-sort="Encrypted Token">Encrypted Token</th>
+					<th st-sort="Enable">Enable</th>
+				</tr>
+				<tbody>
+					<tr ng-repeat="vendor in vendors | filter:searchText | orderBy:'vendor_name'" 
+                    ng-include="getTemplate(vendor)">
+					</tr>
+				</tbody>
+		</table>
+		<script type="text/ng-template" id="display">
+            <td>{{vendor.vendor_name}}</td>
+            <td>{{vendor.vendor_token}}</td>
+            <td>{{vendor.vendor_address}}</td>
+            <td>{{vendor.discount*100 + " %"}}</td>
+            <td>{{vendor.phone}}</td>
+            <td>{{vendor.email_address}}</td>
+            <td>{{vendor.encrypted_security_token}}</td>
+            <td>
+                <input type="checkbox" ng-checked="vendor.is_enabled==1" />
+            </td>
+            <td>
+                <!--<button ng-click="editVendor(vendor)">Edit</button>-->
+                <a class=".btn .btn-app" ng-click="editVendor(vendor)"><i class="fa fa-edit"></i>Edit</a>
+            </td>
+        </script>
+
+		<script type="text/ng-template" id="edit">
+            <td><input type="text" ng-model="vendors.selected.vendor_name" /></td>
+            <td><input type="text" ng-model="vendors.selected.vendor_token" /></td>
+            <td><input type="text" ng-model="vendors.selected.vendor_address" /></td>
+            <td><input type="text" ng-model="vendors.selected.discount" /></td>
+            <td><input type="text" ng-model="vendors.selected.phone" /></td>
+            <td><input type="text" ng-model="vendors.selected.email_address" /></td>
+            <td><input type="text" ng-model="vendors.selected.encrypted_security_token" /></td>
+            <td><input type="checkbox" ng-checked="vendors.selected.is_enabled==1" /></td>
+            <td>
+                <a class=".btn .btn-app" ng-click="saveVendor($index)"><i class="fa fa-save"></i> Save</a>
+                <a class=".btn .btn-app" ng-click="reset()"><i class="fa fa-close"></i> Cancel</a>
+                <!--<button ng-click="reset()">Cancel</button>-->
+            </td>
+    </script>
+	</div>
+	<!-- /.content -->
+
+	<% include ./layout/footer.html %>
