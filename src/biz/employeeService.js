@@ -1,5 +1,5 @@
 /**
- * userService
+ * employeeService
  */
 
 var pool = require('../helpers/dbHelper')();
@@ -8,7 +8,7 @@ var pool = require('../helpers/dbHelper')();
 function employeeService(){
     
     this.getEmpolyees = function(req, callback){
-        pool.query('select * from employees', function(err, rows){
+        pool.query('select * from employee', function(err, rows){
             // console.log(rows);
             // console.log(err);            
             callback(err, rows);
