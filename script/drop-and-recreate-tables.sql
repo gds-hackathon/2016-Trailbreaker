@@ -105,6 +105,7 @@ create table `transaction` (
     attendances numeric,
     vendor_key int,
     coupon_key int,
+    discount decimal(2,2),
     transaction_date datetime,
     request_amount decimal(7,2),
     paid_amount decimal(7,2),

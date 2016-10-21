@@ -37,7 +37,7 @@ function vendorService(){
 
     //find by key
     this.find = function(req, callback){
-        this.getAll(req, callback(err, rows == null ? null : rows[0]));
+        this.findAll(req, function(err,rows) {callback(err, rows == null ? null : rows[0])});
     }
 }
 
