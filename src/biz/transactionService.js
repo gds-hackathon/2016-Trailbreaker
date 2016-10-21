@@ -32,6 +32,8 @@ function transactionService(){
             callback(err, rows == null? null : rows[0]);
         });
     }
+    
+    var topThis = this;
 
     this.insertTransaction = function(req, callback){
 
@@ -46,6 +48,7 @@ function transactionService(){
             errors.push('request_amount', 'invalid request_amount');
         }
         
+
         vender = new VenderService();
         vender.find({'params':{'vendor_key':req.body.vendor_key}}, function(err,row){
             var discount = row.discount || 0;
@@ -115,21 +118,104 @@ function transactionService(){
                     else{
                         var employeeLimit = new EmployeeLimitService();
                         employeeLimit.getAllLimitsByEmployeeKey(req.body.employee_key, function(err, data){
-                            if(err)
+                            //console.log('employee limit' + data);
+                            if(data)
                             {
-                                var error = new Error('invalid status');
-                                callback(error, {status:1, message:'employee is disabled'})
+                                topThis.getTotalAmountByEmpolyeeKey(req.body.employee_key, function(err, rows){
+                                    var totalAmount = {};
+                                    //console.log('total amount' + rows);
+                                    totalAmount.Daily = rows.where(function(item){
+                                        //TODO filter out some sensitive fields.
+                                        return item.limit_period_key == 1;
+                                    })[0].total_amount;
+                                    totalAmount.Weekly = rows.where(function(item){
+                                        //TODO filter out some sensitive fields.
+                                        return item.limit_period_key == 2;
+                                    })[0].total_amount;
+                                    totalAmount.Monthly = rows.where(function(item){
+                                        //TODO filter out some sensitive fields.
+                                        return item.limit_period_key == 3;
+                                    })[0].total_amount;
+
+console.log(data);
+                                    console.log('data.DailyLimit' + data.DailyLimit);
+                                    console.log('totalAmount.Daily' + totalAmount.Daily);
+
+                                    if(data.DailyLimit <  totalAmount.Daily)
+                                    {
+                                        var error = new Error('invalid status');
+                                        callback(error, {status:1, message:'execed daily limit'});
+                                    }else if(data.WeeklyLimit <  totalAmount.Weekly)
+                                    {
+                                        var error = new Error('invalid status');
+                                        callback(error, {status:1, message:'execed weekly limit'});
+                                    }else if(data.MonthlyLimit <  totalAmount.Monthly)
+                                    {
+                                        var error = new Error('invalid status');
+                                        callback(error, {status:1, message:'execed monthly limit'});
+                                    }
+                                    else
+                                    {
+                                        pool.query(cmd, params, function(insertErr, data){
+                                            console.log(data);
+                                            callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
+                                        });
+                                    }
+                                });
+                               
+                            }else
+                            {
+                                pool.query(cmd, params, function(insertErr, data){
+                                    console.log(data);
+                                    callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
+                                });
                             }
-                            pool.query(cmd, params, function(insertErr, data){
-                                console.log(data);
-                                callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
-                            });
+
                         });
                     }
                 });
             }
         })
-    }
+    };
+
+    this.getTotalAmountByEmpolyeeKey = function(employeeKey, callback){
+        var cmd = 
+        'select 1 as limit_period_key, sum(temp.discount_amount) as total_amount from (select (request_amount - paid_amount) as `discount_amount` ' +
+        ',DATEDIFF(now(),transaction_date) as `days`  from `transaction` where transaction_status_key = 1 and employee_key = ?) as temp ' +
+        'where temp.days <= 1 ' +
+        'union all ' +
+        'select 2 as limit_period_key, sum(temp.discount_amount) as total_amount from (select (request_amount - paid_amount) as `discount_amount` ' +
+        ',DATEDIFF(now(),transaction_date) as `days`  from `transaction` where transaction_status_key = 1 and employee_key = ?) as temp ' +
+        'where temp.days <= 7 ' +
+        'union all ' +
+        'select 3 as limit_period_key, sum(temp.discount_amount) as total_amount from (select (request_amount - paid_amount) as `discount_amount` ' +
+        ',DATEDIFF(now(),transaction_date) as `days`  from `transaction` where transaction_status_key = 1 and employee_key = ?) as temp ' +
+        'where temp.days <= 31; ';
+
+        var params = [];
+
+        params.push(employeeKey);
+        params.push(employeeKey);
+        params.push(employeeKey);
+
+        //console.log(params);
+
+        pool.query(cmd, params, function(err, rows){
+            //console.log('sdfasdf' + rows);
+            // console.log(err);       
+            if(rows == null || !rows || rows.length == 0)
+            {
+                var error = new Error('no data found');
+                //{status:1,message:'no transaction found for the employee' + employeeKey}
+                callback(err, null);
+            }     
+            else{
+                callback(err, rows);
+            }
+        });
+        
+    };
+    
 }
 
 module.exports = transactionService;
