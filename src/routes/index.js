@@ -14,4 +14,8 @@ router.get('/mgmConsole', function(req, res, next) {
   res.render('management/index', { title: 'Express' });
 });
 
+router.get('/registration', function(req, res, next) {
+  res.render('registration', { title: 'Customer Registration' });
+});
+
 module.exports = router;
