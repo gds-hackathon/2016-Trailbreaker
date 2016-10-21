@@ -7,7 +7,7 @@ var pool = require('../helpers/dbHelper')();
 
 function vendorService(){
     
-    this.getAll = function(req, callback){
+    this.findAll = function(req, callback){
         console.log('req.params: ' + req.params.vendor_token);
         var params = [];
         var cmd = 'select * from vendor where 1=1 ';
@@ -28,6 +28,11 @@ function vendorService(){
             // console.log(err);
             callback(err, rows == null? null : rows);
         });
+    }
+
+    //find by key
+    this.find = function(req, callback){
+        this.getAll(req, callback(err, rows == null ? null : rows[0]));
     }
 }
 
