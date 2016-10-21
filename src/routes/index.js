@@ -10,6 +10,9 @@ router.get('/report', function(req, res, next) {
   res.render('report', { title: 'Express' });
 });
 
+router.get('/registration', function(req, res, next) {
+  res.render('registration', { title: 'Customer Registration' });
+});
 router.get('/transaction', function(req, res, next) {
   res.render('transaction', { title: 'Transaction' });
 });
@@ -22,9 +25,8 @@ router.get('/admin/vendor', function(req, res, next) {
   res.render('management/vendorMgm', { title: 'Express' });
 });
 
-router.get('/registration', function(req, res, next) {
-  res.render('registration', { title: 'Customer Registration' });
+router.get('/approveEmployee', function(req, res, next) {
+  res.render('management/approveEmployee', { title: 'Approve Employee' });
 });
-
 
 module.exports = router;

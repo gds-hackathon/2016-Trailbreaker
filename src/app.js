@@ -13,7 +13,8 @@ var routes = require('./routes/index');
 
 //var users = require('./routes/users');
 var employees = require('./routes/admin/employees');
-var vendor = require('./routes/api/vendor');
+var apiVendor = require('./routes/api/vendor');
+var apiEmployee = require('./routes/api/employee');
 //var employees = require('./routes/api/transaction');
 
 var app = express();
@@ -39,7 +40,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/admin/employees', employees);
 
-app.use('/api/vendor', vendor);
+app.use('/api/vendor', apiVendor);
+app.use('/api/employee', apiEmployee);
 //app.use('/api/transaction', transaction);
 
 // catch 404 and forward to error handler

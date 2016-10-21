@@ -7,7 +7,7 @@ var service = new (require('../../biz/vendorService'))();
 router.get('/:vendor_token', function(req, res, next) {
     if(!req.params.vendor_token) throw new Error('invalid parameter');
 
-    service.getAll(req, function(err, rows){
+    service.findAll(req, function(err, rows){
         // console.log(err);
         //console.log(rows);
 
@@ -23,9 +23,9 @@ router.get('/:vendor_token', function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-    service.getAll(req, function(err, rows){
-        console.log('err: ' +err);
-        console.log(rows);
+    service.findAll(req, function(err, rows){
+        // console.log('err: ' +err);
+        // console.log(rows);
         if(rows){
             //TODO 
             var data = rows.select(function(item, index){
