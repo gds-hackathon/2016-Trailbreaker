@@ -1,5 +1,6 @@
 require('./lib/extensions');
 require('./appConfig.js');
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -9,8 +10,8 @@ var bodyParser = require('body-parser');
 var checkSignature = require('./midware/checkSignature');
 
 var routes = require('./routes/index');
-//var users = require('./routes/users');
 
+//var users = require('./routes/users');
 var employees = require('./routes/admin/employees');
 var vendor = require('./routes/api/vendor');
 //var employees = require('./routes/api/transaction');
