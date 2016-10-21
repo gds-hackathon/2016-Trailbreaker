@@ -1,20 +1,20 @@
 
-CODE:
-/src
-DOC:
-/doc
+==Folder Structure==
+- /src      SOURCE CODE
+- /script   DB SCRIPTS
+- /doc      DOCUMENTS
 
 
 HOW TO RUN:
 > cd src/
 > npm install
-> npm start
-then visit http://localhost:3000
+> npm start or > SET PORT=80 & npm start
+then visit http://localhost:<PORT:default is 3000>
 
-PAGES:
-/admin/employees
+==ADMIN PAGES==
+/admin
 
-API:
+==API==
 [DONE] /api/vendor
 [DONE] /api/vendor/:vendor_token
 [DONE] /api/employee
@@ -22,11 +22,16 @@ API:
 [DONE] /api/employee/:employee_token
 [DONE] /api/employee/wechat_id/:wechat_id
 [DONE] /api/employee/updatestatus
-/api/transaction
+[DONE] /api/transaction
+
+==PAGES==
+NOTE: URL starts with /pages/ will get signature valiation.
+[DONE] /pages/registration
+[DONE] /pages/transaction
 
 
-
-TABLES:
+Database Design:
+Please refer to /script folder.
 
 
 

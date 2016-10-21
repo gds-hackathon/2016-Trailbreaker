@@ -5,8 +5,8 @@ var handler = function (req, res, next) {
   console.log('receive message');
   console.log(req.weixin);
 
-  var signatureHelper = require('../helpers/signatureHelper');
-  
+  var signatureHelper = new (require('../helpers/signatureHelper'))();
+
   if(message.FromUserName == 'otCTjtzgIIpuMfEOU9LJHcPlAi4A'){
     if(message.MsgType === 'text')
     {
@@ -14,10 +14,10 @@ var handler = function (req, res, next) {
         var nonce = guid() + message.FromUserName.toLowerCase();
         var signature = signatureHelper.computeSignature(ts, nonce);
 
-        var urlPart = 'ts=' +  + '&nonce=' + nonce + '&signature=' + signature;
+        var urlPart = 'ts=' + ts + '&nonce=' + nonce + '&signature=' + signature;
 
         if(/^\s*(register|zhuce|注册)/i.test(message.Content)){ 
-           var url = appConfig.BASE_URL + '/registration' + '?' + urlPart;
+           var url = appConfig.BASE_URL + '/pages/registration' + '?' + urlPart;
 
             res.reply([
             {
@@ -28,7 +28,7 @@ var handler = function (req, res, next) {
             }
           ]);
         }else if(/^\s*(discout|dazhe|打折)/i.test(message.Content)){
-            var url = appConfig.BASE_URL + '/transaction' + '?' + urlPart;
+            var url = appConfig.BASE_URL + '/pages/transaction' + '?' + urlPart;
             res.reply([
             {
               title: 'Discount',
@@ -84,4 +84,4 @@ var handler = function (req, res, next) {
 
 var wechat = require('wechat');
 
-module.exports  = wechat(appConfig.wechat.wechat_token, handler);
+module.exports  = wechat(appConfig.wechat.token, handler);
