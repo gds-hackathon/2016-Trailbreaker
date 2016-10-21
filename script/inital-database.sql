@@ -13,5 +13,7 @@ create table `employees` (
     change_by varchar(50)
 );
 
+select * FROM employees;
+
 insert into `employees` (employee_name, create_date, change_date, change_by)
 values('sam', now(), now(), 'admin');
