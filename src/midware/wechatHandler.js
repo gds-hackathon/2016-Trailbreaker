@@ -7,38 +7,64 @@ var handler = function (req, res, next) {
 
   var signatureHelper = new (require('../helpers/signatureHelper'))();
 
-  if(message.FromUserName == 'otCTjtzgIIpuMfEOU9LJHcPlAi4A'){
-    if(message.MsgType === 'text')
-    {
-        var ts = (Date.now());
-        var nonce = guid() + message.FromUserName.toLowerCase();
-        var signature = signatureHelper.computeSignature(ts, nonce);
+  //if(message.FromUserName == 'otCTjtzgIIpuMfEOU9LJHcPlAi4A'){
+  if(message.MsgType === 'text')
+  {
+      var ts = (Date.now());
+      var nonce = guid() + message.FromUserName.toLowerCase();
+      var signature = signatureHelper.computeSignature(ts, nonce);
 
-        var urlPart = 'wechat_id='+ message.FromUserName + '&ts=' + ts + '&nonce=' + nonce + '&signature=' + signature;
+      var urlPart = 'wechat_id='+ message.FromUserName + '&ts=' + ts + '&nonce=' + nonce + '&signature=' + signature;
 
-        if(/^\s*(register|zhuce|注册)/i.test(message.Content)){ 
-           var url = appConfig.BASE_URL + '/pages/registration' + '?' + urlPart;
+      if(/^\s*(register|zhuce|注册)/i.test(message.Content)){ 
+              var service = new (require('../biz/employeeService'))();
+              var params = {"params":{"wechat_id" : message.FromUserName}};
+              service.findAll(params, function (err, rows){
+                var url = appConfig.BASE_URL + '/pages/transaction' + '?' + urlPart;
+                var existed = (rows && rows.length  > 0);
 
-            res.reply([
-            {
-              title: 'Discount',
-              description: 'Discount message goes here. Welcome!',
-              picurl: 'http://img13.360buyimg.com/cms/jfs/t3406/29/406493902/87685/b6e50be3/58087f30Nbadb1818.jpg',
-              url: url
-            }
-          ]);
-        }else if(/^\s*(discout|dazhe|打折)/i.test(message.Content)){
-            var url = appConfig.BASE_URL + '/pages/transaction' + '?' + urlPart;
-            res.reply([
-            {
-              title: 'Discount',
-              description: 'Discount message goes here. Welcome!',
-              picurl: 'http://img13.360buyimg.com/cms/jfs/t3406/29/406493902/87685/b6e50be3/58087f30Nbadb1818.jpg',
-              url: url
-            }
-          ]);
-        }
-    }
+                if(!existed){
+                    url = appConfig.BASE_URL + '/pages/registration' + '?' + urlPart;
+                }
+
+                if(existed){                                  
+                    res.reply([{
+                      title: 'You already registred.',
+                      description: 'Discount message goes here. Welcome!',
+                      picurl: 'http://img13.360buyimg.com/cms/jfs/t3406/29/406493902/87685/b6e50be3/58087f30Nbadb1818.jpg',
+                      url: url
+                    }]);
+                }else{                   
+                    res.reply([
+                    {
+                      title: 'Click to register',
+                      description: 'Please click to register.',
+                      picurl: 'http://img13.360buyimg.com/cms/jfs/t3406/29/406493902/87685/b6e50be3/58087f30Nbadb1818.jpg',
+                      url: url
+                    }]);
+                }//end of if-else
+            }); //end else of findAll
+      }else if(/^\s*(discout|dazhe|打折)/i.test(message.Content)){
+          var url = appConfig.BASE_URL + '/pages/transaction' + '?' + urlPart;
+          res.reply([
+          {
+            title: 'Discount',
+            description: 'Discount message goes here. Welcome!',
+            picurl: 'http://img13.360buyimg.com/cms/jfs/t3406/29/406493902/87685/b6e50be3/58087f30Nbadb1818.jpg',
+            url: url
+          }]);
+      }//else if        
+      else{
+        res.reply({
+            type:'text',
+            //content: JSON.stringify(message),
+            content: 'Thank you for subscribe 程序员肖恩! \r\n'
+            + 'Please input "register|zhuce|注册"for register if you are not a user\r\n'
+            + 'Please input "discout|dazhe|打折" for to get discount! :)\r\n'
+        });
+    } //end else
+}//end if
+else{  
     res.reply({
         type:'text',
         //content: JSON.stringify(message),
@@ -46,7 +72,8 @@ var handler = function (req, res, next) {
         + 'Please input "register|zhuce|注册"for register if you are not a user\r\n'
         + 'Please input "discout|dazhe|打折" for to get discount! :)\r\n'
     });
-  }
+}
+//  }
   /*
   if (message.FromUserName === 'wizardlsw') {
     // reply with text
