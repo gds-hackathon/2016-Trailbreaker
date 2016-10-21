@@ -1,46 +1,49 @@
 <% include ./layout/header.html %>
-<div class="container" ng-controller="RegistrationContorller" >
-<form class="form-horizontal" >
-  <div class="form-group">
-    <label for="inputFirstName" class="col-sm-2 control-label">First Name</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputFirstName"  ng-model="registration.first_name"  placeholder="First Name" required>
-    </div>
-  </div>
 
-    <div class="form-group">
-    <label for="inputLastName" class="col-sm-2 control-label">Last Name</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputLastName" ng-model="registration.last_name" placeholder="Last Name" required>
-    </div>
+	<div class="container" ng-controller="RegistrationContorller">
+				<h3>Register your ID</h3>
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="inputFirstName" class="col-sm-2 control-label">First Name</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="inputFirstName" ng-model="registration.first_name" placeholder="First Name" required>
+				</div>
+			</div>
 
-  </div>  
+			<div class="form-group">
+				<label for="inputLastName" class="col-sm-2 control-label">Last Name</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="inputLastName" ng-model="registration.last_name" placeholder="Last Name" required>
+				</div>
 
-    <div class="form-group">
-    <label for="inputPhone" class="col-sm-2 control-label">Phone</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputPhone" ng-model="registration.phone" placeholder="phone" required>
-    </div>
-  </div>
+			</div>
 
-  <div class="form-group">
-    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputEmail" ng-model="registration.email_address" placeholder="email" required>
-    </div>
-  </div>
+			<div class="form-group">
+				<label for="inputPhone" class="col-sm-2 control-label">Phone</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="inputPhone" ng-model="registration.phone" placeholder="phone" required>
+				</div>
+			</div>
 
- <div class="form-group">
-    <label for="inputemployee_id" class="col-sm-2 control-label">Employee ID</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputemployee_id" ng-model="registration.employee_id" placeholder="employee id" required>
-    </div>
-  </div>
+			<div class="form-group">
+				<label for="inputEmail" class="col-sm-2 control-label">Email</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="inputEmail" ng-model="registration.email_address" placeholder="email" required>
+				</div>
+			</div>
 
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button ng-click="submitForm()" class="btn btn-default">Submit</button>
-    </div>
-  </div>
-</form>
-</div>
+			<div class="form-group">
+				<label for="inputemployee_id" class="col-sm-2 control-label">Employee ID</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="inputemployee_id" ng-model="registration.employee_id" placeholder="employee id"
+						required>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button ng-click="submitForm()" class="btn btn-default">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>

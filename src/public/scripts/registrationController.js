@@ -1,24 +1,22 @@
-function RegistrationContorller($scope,$http,$window) {
-    
+function RegistrationContorller($scope, $http, $window) {
+
     console.log("test2");
-    $scope.submitForm=function(){
-       
-        $http.post("/api/employee/register/"+getQueryVariable("wechat_id")+location.search,$scope.registration )
-        .success(function (response) {
-            console.log(response);
-            if(response.employee_key)
-            {
-            var landingUrl="/pages/transaction/wechat_id/"+getQueryVariable("wechat_id")+"/"+response.employee_key+location.search;
-            $window.location.href = landingUrl
-            }
-            else{
-                alert("please retry");
-            }
-        }).error(function(message)
-        {
-            alert("please retry")
-             console.log(response);
-        });
+    $scope.submitForm = function () {
+
+        $http.post("/api/employee/register/" + getQueryVariable("wechat_id") + location.search, $scope.registration)
+            .success(function (response) {
+                console.log(response);
+                if (response.employee_key) {
+                    var landingUrl = "/pages/transaction/wechat_id/" + getQueryVariable("wechat_id") + "/" + response.employee_key + location.search;
+                    $window.location.href = landingUrl
+                }
+                else {
+                    alert("please retry");
+                }
+            }).error(function (message) {
+                alert("please retry")
+                console.log(response);
+            });
 
     };
 }
