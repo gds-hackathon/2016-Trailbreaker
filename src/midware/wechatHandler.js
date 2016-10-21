@@ -14,7 +14,7 @@ var handler = function (req, res, next) {
         var nonce = guid() + message.FromUserName.toLowerCase();
         var signature = signatureHelper.computeSignature(ts, nonce);
 
-        var urlPart = 'ts=' + ts + '&nonce=' + nonce + '&signature=' + signature;
+        var urlPart = 'wechat_id='+ message.FromUserName + '&ts=' + ts + '&nonce=' + nonce + '&signature=' + signature;
 
         if(/^\s*(register|zhuce|注册)/i.test(message.Content)){ 
            var url = appConfig.BASE_URL + '/pages/registration' + '?' + urlPart;
