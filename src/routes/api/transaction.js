@@ -17,8 +17,20 @@ router.get('/', function(req, res, next) {
    });
 });
 
-
 router.get('/wechat_id/:wechat_id/:transaction_key(\\d+)', function(req, res, next) {
+    //TODO security
+    service.findAll(req, function(err, row){
+        //console.log(row);
+
+        if(row){
+            res.send(row);
+        }else{
+            res.send(null);
+        }
+   });
+});
+
+router.get('/wechat_id/:wechat_id', function(req, res, next) {
     //TODO security
     service.findAll(req, function(err, row){
         //console.log(row);

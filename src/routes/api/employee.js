@@ -74,7 +74,7 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.post('/register/:wechat_id', function(req, res, next) {
+router.post('/register/wechat_id/:wechat_id', function(req, res, next) {
     // console.log('register');
     // console.log(req.body);
     if(!req.params.wechat_id) {
