@@ -70,7 +70,7 @@ create table `employee` (
     employee_id nvarchar(20),
     employee_token nvarchar(10),
     wechat_id nvarchar(50),
-    is_approved bit,
+    is_approved tinyint,
     is_enabled tinyint,
     approved_date datetime,
     create_date datetime,

@@ -4,7 +4,8 @@
 //TODO
 var pool = require('../helpers/dbHelper')();
 var VenderService = require('./vendorService');
-var EmployeeService = require('./employeeService')
+var EmployeeService = require('./employeeService');
+var EmployeeLimitService = require('./employeeLimitService')
 
 var transactions = [   
 ];
@@ -112,10 +113,17 @@ function transactionService(){
                         callback(error, {status:1, message:'employee is disabled'});  
                     }
                     else{
-
-                        pool.query(cmd, params, function(insertErr, data){
-                            console.log(data);
-                            callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
+                        var employeeLimit = new EmployeeLimitService();
+                        employeeLimit.getAllLimitsByEmployeeKey(req.body.employee_key, function(err, data){
+                            if(err)
+                            {
+                                var error = new Error('invalid status');
+                                callback(error, {status:1, message:'employee is disabled'})
+                            }
+                            pool.query(cmd, params, function(insertErr, data){
+                                console.log(data);
+                                callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
+                            });
                         });
                     }
                 });

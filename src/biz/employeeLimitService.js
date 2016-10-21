@@ -34,6 +34,11 @@ function employeeLimitService(){
                     //TODO filter out some sensitive fields.
                     return item.limit_period_key == 3;
                 });
+                callback(null, data);
+            }
+            else
+            {
+                callback(new Error('no employee limit enabled'), null);
             }
         });
     };
