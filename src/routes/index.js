@@ -22,4 +22,7 @@ router.get('/mgmConsole', function(req, res, next) {
   res.render('management/index', { title: 'Express' });
 });
 
+router.get('/approveEmployee', function(req, res, next) {
+  res.render('management/approveEmployee', { title: 'Approve Employee' });
+});
 module.exports = router;
