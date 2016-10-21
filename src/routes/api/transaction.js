@@ -17,4 +17,19 @@ router.get('/', function(req, res, next) {
 
 });
 
+
+router.post('/', function(req, res, next) {
+
+    service.insertTransaction(req, function(err, rows){
+        if(err){
+            console.log(err);
+            res.send({status: 1, message: null})
+        }else{
+            res.send(rows);
+        }
+    });
+
+    //res.send(req.body);
+});
+
 module.exports = router;
