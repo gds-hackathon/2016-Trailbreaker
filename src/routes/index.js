@@ -14,6 +14,9 @@ router.get('/pages/registration', function(req, res, next) {
   res.render('registration', { title: 'Customer Registration' });
 });
 router.get('/pages/transaction/wechat_id/:wechat_id/:transaction_id', function(req, res, next) {
+  res.render('transactionSuccess', { title: 'Transaction' });
+});
+router.get('/pages/transaction/wechat_id/:wechat_id', function(req, res, next) {
   res.render('transaction', { title: 'Transaction' });
 });
 

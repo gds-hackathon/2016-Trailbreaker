@@ -1,25 +1,31 @@
 function RegistrationContorller($scope, $http, $window) {
 
     console.log("test2");
-    $scope.submitForm = function () {
-        var url = "/api/employee/register/wechat_id/" + getQueryVariable("wechat_id") + location.search;
-        $http.post(url, $scope.registration)
-            .success(function (response) {
-                console.log(response);
-                if (response.employee_key) {
-                    var landingUrl = "/pages/transaction/wechat_id/" + getQueryVariable("wechat_id") + location.search;
-                    $window.location.href = landingUrl;
-                } else if (response.status === 1) {
-                    alert("You've already register, please go to message history and send 'discout' to get discount");
-                }
-                else {
-                    alert("please retry");
-                }
-            }).error(function (message) {
-                alert("please retry")
-                console.log(response);
-            });
+            
+    $scope.submitForm=function(){
+        var wid = getQueryVariable("wechat_id");
+        console.log(wid);
+        var url = "/api/employee/register/wechat_id/"+wid+location.search;
+        $http.post(url, $scope.registration )
+        .success(function (response) {
+            console.log(response);
+            if(response.employee_key)
+            {
+                // var landingUrl = "/pages/transaction/wechat_id/"+wid + location.search;
+                // $window.location.href = landingUrl;
 
+                alert('Register successfully. Please wait HR to approve it. \r\n After approval, you can pay with discout.');
+            }else if(response.status === 1){
+                alert("You've already register, please go to message history and send 'discout' to get discount");
+            }
+            else{
+                alert("please retry");
+            }
+        }).error(function(message)
+        {
+            alert("please retry")
+             console.log(response);
+        });
     };
 }
 
