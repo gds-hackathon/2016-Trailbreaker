@@ -114,7 +114,7 @@ function transactionService(){
                     else{
 
                         pool.query(cmd, params, function(insertErr, data){
-                            //console.log(data);
+                            console.log(data);
                             callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
                         });
                     }

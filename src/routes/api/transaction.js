@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
     service.insertTransaction(req, function(err, rows){
         if(err){
             console.log(err);
-            res.send({status: 1, message: null})
+            res.send({status: 1, message: rows})
         }else{
             res.send(rows);
         }
