@@ -27,7 +27,6 @@ router.get('/', function(req, res, next) {
         console.log('err: ' +err);
         console.log(rows);
         if(rows){
-            if(typeof rows)
             //TODO 
             var data = rows.select(function(item, index){
                 //TODO filter out some sensitive fields.
