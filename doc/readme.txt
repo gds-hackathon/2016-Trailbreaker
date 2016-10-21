@@ -23,6 +23,7 @@ then visit http://localhost:<PORT:default is 3000>
 [DONE] [POST]       /api/employee/updatestatus
 [DONE] [GET|POST]   /api/transaction
 [DONE] [GET]        /api/transaction/:transaction_key
+[DONE] [GET]        /api/transaction/wechat_id/:wechat_id?QUERYSTRING
 [DONE] [GET]        /api/transaction/wechat_id/:wechat_id/:transaction_key
 [DONE] [GET]        /api/transaction/qrcode/wechat_id/:wechat_id/:transaction_key?wechat_id=<wechat_id>&...
 
