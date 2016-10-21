@@ -417,6 +417,3 @@ VALUES
 'sam.shen@greendotcorp.com',
 '123456',
 1);
-
-
-
