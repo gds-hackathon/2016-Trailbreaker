@@ -67,7 +67,11 @@ function employeeService(){
         this.findAll(req, function(err, rows){
             //console.log(rows);
             if(rows && rows.length > 0){
-                callback(new Error('already registered'), rows[0]);
+                callback({
+                    status: 1,
+                    message: 'already registered',
+                    errors : []
+                }, rows[0]);
             }else{
                 
                 var cmd = 'INSERT INTO `employee` (`first_name`,`last_name`,`phone`,`email_address`,`employee_id`,`employee_token`,`wechat_id`,`is_approved`,`is_enabled`,'
