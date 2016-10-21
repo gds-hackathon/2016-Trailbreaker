@@ -8,8 +8,10 @@ function RegistrationContorller($scope,$http,$window) {
             console.log(response);
             if(response.employee_key)
             {
-                var landingUrl = "/pages/transaction/wechat_id/"+getQueryVariable("wechat_id") + location.search;
-                $window.location.href = landingUrl;
+                // var landingUrl = "/pages/transaction/wechat_id/"+getQueryVariable("wechat_id") + location.search;
+                // $window.location.href = landingUrl;
+
+                alert('Register successfully. Please wait HR to approve it. \r\n After approval, you can pay with discout.');
             }else if(response.status === 1){
                 alert("You've already register, please go to message history and send 'discout' to get discount");
             }
