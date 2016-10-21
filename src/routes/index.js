@@ -25,7 +25,7 @@ router.get('/admin/vendor', function(req, res, next) {
   res.render('management/vendorMgm', { title: 'Express' });
 });
 
-router.get('/approveEmployee', function(req, res, next) {
+router.get('/admin/approveEmployee', function(req, res, next) {
   res.render('management/approveEmployee', { title: 'Approve Employee' });
 });
 

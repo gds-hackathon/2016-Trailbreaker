@@ -1,6 +1,54 @@
 <% include ./layout/header.html %>
+<script type="text/javascript" src="http://static.fusioncharts.com/code/latest/fusioncharts.js"></script>
+<script type="text/javascript" src="http://static.fusioncharts.com/code/latest/themes/fusioncharts.theme.fint.js?cacheBust=56"></script>
+<script type="text/javascript">
+  FusionCharts.ready(function(){
+    var fusioncharts = new FusionCharts({
+    type: 'angulargauge',
+    renderAt: 'chart-container',
+    width: '400',
+    height: '250',
+    dataFormat: 'json',
+    dataSource: {
+        "chart": {
+            "caption": "Customer Satisfaction Score",
+            "subcaption": "Last week",
+            "lowerLimit": "0",
+            "upperLimit": "100",
+            "lowerLimitDisplay": "Bad",
+            "upperLimitDisplay": "Good",
+            "showValue": "1",
+            "valueBelowPivot": "1",
+            "theme": "fint"
+        },
+        "colorRange": {
+            "color": [{
+                "minValue": "0",
+                "maxValue": "50",
+                "code": "#e44a00"
+            }, {
+                "minValue": "50",
+                "maxValue": "75",
+                "code": "#f8bd19"
+            }, {
+                "minValue": "75",
+                "maxValue": "100",
+                "code": "#6baa01"
+            }]
+        },
+        "dials": {
+            "dial": [{
+                "value": "67"
+            }]
+        }
+    }
+}
+);
+    fusioncharts.render();
+});
+</script>
 <div ng-controller="IndexContorller">
-
+<div id="chart-container">FusionCharts XT will load here!</div>
 <h1>Hello world <%= title %></h1>
 {{name}}
 </div>
