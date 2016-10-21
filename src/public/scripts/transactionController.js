@@ -4,4 +4,12 @@ function TransactionContorller($scope,$http) {
         .then(function (response) {
             $scope.vendors = response.data;
         });
+
+   $scope.submit=function(){
+        $http.post("/api/transaction",$scope.transaction )
+        .then(function (response) {
+            console.log(response);
+        });
+
+    };
 }

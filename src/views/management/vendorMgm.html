@@ -2,8 +2,15 @@
 	<script src="/scripts/vendorController.js"></script>
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper col-xs-10 .col-sm-4 .col-lg-6" ng-controller="VendorController">
+        
+        <div class="form-group .col-xs-3 .col-sm-2">
+            <a class=".btn .btn-app" ng-click=""><i class="fa fa-plus"></i> Create Vendor</a>
+		</div>
+        <div class="form-group">
+            <input ng-model="searchText" st-search="" class="form-control" 
+            placeholder="global search ..." type="text" />
+        </div>
 
-		<div class=""><input ng-model="searchText" st-search="" class="form-control" placeholder="global search ..." type="text" /></div>
 		<table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
 			<thead>
 				<tr>
@@ -53,7 +60,7 @@
                 <a class=".btn .btn-app" ng-click="reset()"><i class="fa fa-close"></i> Cancel</a>
                 <!--<button ng-click="reset()">Cancel</button>-->
             </td>
-    </script>
+        </script>
 	</div>
 	<!-- /.content -->
 

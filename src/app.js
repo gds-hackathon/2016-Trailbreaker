@@ -49,13 +49,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/', routes);
 app.use('/admin/employees', employees);
 
 app.use('/api/vendor', apiVendor);
 app.use('/api/employee', apiEmployee);
-app.use('/api/transaction', apiTransaction);
+app.use('/api/transaction',apiTransaction);
+//app.use('/api/transaction', transaction);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
