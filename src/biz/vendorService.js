@@ -26,6 +26,11 @@ function vendorService(){
         pool.query(cmd, params, function(err, rows){
             //console.log(rows);
             // console.log(err);
+            // if(rows){
+            //     for(var key in rows){
+            //         rows[key].is_enabled2 = !!rows[key].is_enabled[0];
+            //     }
+            // }
             callback(err, rows == null? null : rows);
         });
     }

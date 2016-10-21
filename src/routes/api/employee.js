@@ -73,4 +73,24 @@ router.get('/', function(req, res, next) {
    });
 });
 
+
+router.post('/register/:wechat_id', function(req, res, next) {
+    // console.log('register');
+    // console.log(req.body);
+    if(!req.params.wechat_id) throw new Error('Invalid parameter');
+    // console.log('req.body: ' + JSON.stringify(req.body));
+    // console.log(req.body);
+
+    service.register(req, function(err, rows){
+        if(err){
+            console.log(err);
+            res.send({status: 1, message: null})
+        }else{
+            res.send(rows);
+        }
+    });
+
+    //res.send(req.body);
+});
+
 module.exports = router;
