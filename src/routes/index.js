@@ -17,12 +17,11 @@ router.get('/transaction', function(req, res, next) {
   res.render('transaction', { title: 'Transaction' });
 });
 
-
-router.get('/mgmConsole', function(req, res, next) {
+router.get('/admin', function(req, res, next) {
   res.render('management/index', { title: 'Express' });
 });
 
-router.get('/vendor', function(req, res, next) {
+router.get('/admin/vendor', function(req, res, next) {
   res.render('management/vendorMgm', { title: 'Express' });
 });
 

@@ -8,6 +8,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var checkSignature = require('./midware/checkSignature');
+var wechatHandler = require('./midware/wechatHandler');
 
 var routes = require('./routes/index');
 
@@ -15,7 +16,7 @@ var routes = require('./routes/index');
 var employees = require('./routes/admin/employees');
 var apiVendor = require('./routes/api/vendor');
 var apiEmployee = require('./routes/api/employee');
-//var employees = require('./routes/api/transaction');
+var apiTransaction = require('./routes/api/transaction');
 
 var app = express();
 
@@ -31,7 +32,19 @@ app.set('view engine', 'html');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(function(req, res, next){
+   if(appConfig.BASE_URL === ''){
+       appConfig.BASE_URL = 'http://' + req.hostname;
+       if(app.get('port') !=  80){
+          appConfig.BASE_URL += ':' + app.get('port');
+       }
+   } 
+
+   //console.log(appConfig.BASE_URL);
+   next();
+});
 app.use('/pages/', checkSignature);
+app.use('/wechat/gd/api', wechatHandler);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -42,6 +55,7 @@ app.use('/admin/employees', employees);
 
 app.use('/api/vendor', apiVendor);
 app.use('/api/employee', apiEmployee);
+app.use('/api/transaction',apiTransaction);
 //app.use('/api/transaction', transaction);
 
 // catch 404 and forward to error handler
