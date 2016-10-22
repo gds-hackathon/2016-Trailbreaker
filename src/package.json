@@ -2,10 +2,10 @@
   "name": "src",
   "version": "0.0.0",
   "private": true,
-  "description": "fashionsingles",
+  "description": "trailbreaker",
   "repository": {
     "type": "git",
-    "url": "https://git.oschina.net/shaowei/fashionsingles"
+    "url": "https://git.oschina.net/sw0/trailbreaker"
   },
   "scripts": {
     "start": "nodemon ./bin/www"
