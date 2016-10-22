@@ -146,4 +146,19 @@ function createQrCode2(id, cookie ,res){
     req3.end();
 }
 
+
+router.get('/reports/:reportType/:start/:end', function(req, res, next) {
+    //TODO security, we should require nonce and signature be passed in
+    service.getReportData(req, function(err, rows){
+        if(err){
+            console.log(err);
+            res.send({status: 1, message: rows})
+        }else{
+            res.send(rows);
+        }
+    });
+
+    //res.send(req.body);
+});
+
 module.exports = router;
