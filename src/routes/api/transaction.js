@@ -75,16 +75,32 @@ router.post('/wechat_id/:wechat_id', function(req, res, next) {
 
 router.get('/qrcode/wechat_id/:wechat_id/:transaction_key', function(req, res, next) {
     console.log(req.url);
-    createQrCode1(req.query.data, res, createQrCode2);
+
+    // var urlPrefix = appConfig.BASE_URL + '/api/transaction/confirm/wechat_id/' + req.params.wechat_id + '/' +
+
+    service.find(req, function(err, transaction){
+        if(transaction){            
+            var signatureHelper = new (require('../../helpers/signatureHelper'))();
+            var nonce = (req.params.wechat_id + '|' + transaction.paid_amount + '|' + transaction.employee_token).toLowerCase();
+            var hash = signatureHelper.computeSignature(transaction.transaction_key, nonce);
+
+            var urlData = '?wid='+ req.params.wechat_id + '&tranid='+ req.params.transaction_key + '&paid=' + transaction.paid_amount + '&hash=' + hash;
+            
+            createQrCode1(urlData, res, createQrCode2);            
+        }else{
+            //todo errors
+            res.send('SORRY-ERROR-OCCURRED');
+        }
+    }); 
 });
 
 function createQrCode1(urlData, res, callback){
     var http = require('http');
 
     var data = '{"data":{"kind":"Url","correctionLevel":"M","quietZone":"Zero","optimizeCl":true,"content":"'
-    + 'http://jd.com?data=' +  urlData + 
+    + appConfig.BASE_URL + '/' + urlData + 
     '","shortenIfPossible":true}}';
-    console.log('URL: ' + data);
+    console.log('data: ' + data);
 
     var opt = {  
         method: "POST",  
@@ -93,7 +109,7 @@ function createQrCode1(urlData, res, callback){
         path: "/service.asmx/CreateCode",
         headers: {  
             "Content-Type": 'application/json; charset=UTF-8',  
-            //"Content-Length": data.length  ,
+            "Content-Length": data.length,
             "referer": "http://kamocu.com/en/qrcode/",
             "X-Requested-With":"XMLHttpRequest"
         }  
@@ -108,14 +124,16 @@ function createQrCode1(urlData, res, callback){
             var dx = JSON.parse(chunk);
             var id = dx.d.myCodes[0].id;
             var cookie = res1.headers['set-cookie'][0];
-            // console.log(dx.d.myCodes[0].id);
-            // console.log(chunk);
+            console.log(dx.d.myCodes[0].id);
+            console.log(chunk);
             console.log('id:' + id);
+            console.log('mycodes.url:' + dx.d.myCodes.length + ';' + dx.d.myCodes[0].name);
             // res.send(cookie);
             //res.send(chunk);
             callback(id , cookie, res);
         });
-        res1.on('end', function() {
+        res1.on('end', function(errx) {
+            console.log(errx);
             console.log(222)
         });
     });

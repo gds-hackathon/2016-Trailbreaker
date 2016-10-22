@@ -1,5 +1,6 @@
-function VendorController($scope, $http) {
-
+// VendorController.$inject = ['$scope','$http'];
+// function VendorController($scope, $http) {
+app.controller('VendorController', function ($scope, $http) {
     //Request vendor list
     $http.get("/api/vendor")
         .then(function (response) {
@@ -27,5 +28,5 @@ function VendorController($scope, $http) {
         $scope.vendors.selected = {};
     };
 
-}
+});
 

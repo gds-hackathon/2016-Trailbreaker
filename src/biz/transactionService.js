@@ -7,7 +7,7 @@ var VenderService = require('./vendorService');
 var EmployeeService = require('./employeeService');
 var EmployeeLimitService = require('./employeeLimitService')
 
-var __sqlstr = 'select t.*,e.wechat_id, e.first_name, e.last_name, ts.transaction_status, tsr.content from `transaction` t'
+var __sqlstr = 'select t.*,e.wechat_id, e.first_name, e.last_name, e.employee_token, ts.transaction_status, tsr.content from `transaction` t'
         + ' INNER JOIN `employee` e on e.employee_key = t.employee_key ' 
         + ' INNER JOIN transaction_status ts on t.transaction_status_key = ts.transaction_status_key '
         + ' LEFT JOIN transaction_status_resone tsr on t.transaction_status_resone_key = tsr.transaction_status_resone_key '
