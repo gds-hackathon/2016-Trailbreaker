@@ -45,7 +45,7 @@ app.use(function(req, res, next){
    next();
 });
 // app.use('/pages/', checkSignature);
-app.use('/wechat/gd/api', wechatHandler);
+app.use('/fs/wx/interface', wechatHandler);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
