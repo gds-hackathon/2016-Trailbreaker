@@ -58,12 +58,12 @@ router.get('/:transaction_key(\\d+)', function(req, res, next) {
 
 
 
-router.post('/', function(req, res, next) {
+router.post('/wechat_id/:wechat_id', function(req, res, next) {
     //TODO security, we should require nonce and signature be passed in
     service.insertTransaction(req, function(err, rows){
         if(err){
             console.log(err);
-            res.send({status: 1, message: rows})
+            res.send({status: err.status, message: err.message, errors: err.errors})
         }else{
             res.send(rows);
         }

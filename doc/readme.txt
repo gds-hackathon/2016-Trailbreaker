@@ -1,4 +1,11 @@
 
+--------------------------------------------------------
+USER CASE:
+- 关注公众号
+- 发送“zhuche”, "注册"进行注册； 注册成功，需要后台审批！
+- 发送“discout”,"dazhe","打折"
+--------------------------------------------------------
+
 ==Folder Structure==
 - /src      SOURCE CODE
 - /script   DB SCRIPTS
@@ -12,6 +19,7 @@ HOW TO RUN:
 then visit http://localhost:<PORT:default is 3000>
 
 
+
 ==API==
 [DONE] [GET]        /api/vendor
 [DONE] [GET]        /api/vendor/:vendor_token
@@ -21,8 +29,9 @@ then visit http://localhost:<PORT:default is 3000>
 [DONE] [GET]        /api/employee/wechat_id/:wechat_id
 [DONE] [POST]       /api/employee/register/wechat_id/:wechat_id?QUERYSTRING
 [DONE] [POST]       /api/employee/updatestatus
-[DONE] [GET|POST]   /api/transaction
+[DONE] [GET]        /api/transaction
 [DONE] [GET]        /api/transaction/:transaction_key
+[DONE] [POST]       /api/transaction/wechat_id/:wechat_id?QUERYSTRING
 [DONE] [GET]        /api/transaction/wechat_id/:wechat_id?QUERYSTRING
 [DONE] [GET]        /api/transaction/wechat_id/:wechat_id/:transaction_key
 [DONE] [GET]        /api/transaction/qrcode/wechat_id/:wechat_id/:transaction_key?wechat_id=<wechat_id>&...
@@ -39,6 +48,7 @@ NOTE: URL starts with /pages/ will get signature valiation.
 Please refer to /script folder.
 
 ==TODO==
+SECURITY
 A LOT TODOs
 
 
