@@ -1,6 +1,7 @@
-app.controller('PendingController', function ($scope, $http) {
+function PendingController ($scope, $http, storageService) {
         
-        $scope.message = "Thanks for your registration, please waiting for approval.";
+        // $scope.message = storageService.getMessage();
+        $scope.message = 'Thanks for your registration, please waiting for approval.';
 
-});
+};
 
