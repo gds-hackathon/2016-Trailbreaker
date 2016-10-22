@@ -45,7 +45,7 @@ var handler = function (req, res, next) {
                 }//end of if-else
             }); //end else of findAll
       }else if(/^\s*(discout|dazhe|打折)/i.test(message.Content)){
-          var url = appConfig.BASE_URL + '/pages/transaction' + '?' + urlPart;
+          var url = appConfig.BASE_URL + '/pages/transaction/wechat_id/' +  message.FromUserName + '?' + urlPart;
           res.reply([
           {
             title: 'Discount',
