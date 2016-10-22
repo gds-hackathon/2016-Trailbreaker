@@ -75,14 +75,30 @@ router.post('/wechat_id/:wechat_id', function(req, res, next) {
 
 router.get('/qrcode/wechat_id/:wechat_id/:transaction_key', function(req, res, next) {
     console.log(req.url);
-    createQrCode1(req.query.data, res, createQrCode2);
+
+    // var urlPrefix = appConfig.BASE_URL + '/api/transaction/confirm/wechat_id/' + req.params.wechat_id + '/' +
+
+    service.find(req, function(err, transaction){
+        if(transaction){            
+            var signatureHelper = new (require('../helpers/signatureHelper'))();
+            var nonce = (req.params.wechat_id + '|' + transaction.paid_amount + '|' + transaction.employee_token).toLowerCase();
+            var hash = signatureHelper.computeSignature(transaction.transaction_key, nonce);
+
+            var urlData = '?wid='+ req.params.wechat_id + '&tranid='+ req.params.transaction_key + '&paid=' + transaction.paid_amount + '&hash=' + hash;
+            
+            createQrCode1(urlData, res, createQrCode2);            
+        }else{
+            //todo errors
+            res.send('SORRY-ERROR-OCCURRED');
+        }
+    }); 
 });
 
 function createQrCode1(urlData, res, callback){
     var http = require('http');
 
     var data = '{"data":{"kind":"Url","correctionLevel":"M","quietZone":"Zero","optimizeCl":true,"content":"'
-    + 'http://jd.com?data=' +  urlData + 
+    + appConfig.BASE_URL + '/' + urlData + 
     '","shortenIfPossible":true}}';
     console.log('URL: ' + data);
 
