@@ -11,7 +11,7 @@ var handler = function (req, res, next) {
   if(message.MsgType === 'text')
   {
       var ts = (Date.now());
-      var nonce = guid() + message.FromUserName.toLowerCase();
+      var nonce = guid().substr(0, 9) + message.FromUserName.toLowerCase();
       var signature = signatureHelper.computeSignature(ts, nonce);
 
       var urlPart = 'wechat_id='+ message.FromUserName + '&ts=' + ts + '&nonce=' + nonce + '&signature=' + signature;
