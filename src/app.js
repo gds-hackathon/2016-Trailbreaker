@@ -58,7 +58,6 @@ app.use('/admin/employees', employees);
 app.use('/api/vendor', apiVendor);
 app.use('/api/employee', apiEmployee);
 app.use('/api/transaction',apiTransaction);
-app.use('/api/transaction',apiTransaction);
 //app.use('/api/transaction', transaction);
 
 // catch 404 and forward to error handler
