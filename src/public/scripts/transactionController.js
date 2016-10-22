@@ -21,7 +21,7 @@ function TransactionContorller($scope, $http) {
     };
 
     $scope.count = function (a, b, c) {
-        return a * b + c;
+        return (a * (1-b) + c);
     }
 
 }

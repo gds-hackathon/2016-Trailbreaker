@@ -1,4 +1,4 @@
-function RegistrationContorller($scope, $http, $window) {
+function RegistrationContorller($scope, $http, $window, storageService) {
 
     console.log("test2");
             
@@ -13,8 +13,9 @@ function RegistrationContorller($scope, $http, $window) {
             {
                 // var landingUrl = "/pages/transaction/wechat_id/"+wid + location.search;
                 // $window.location.href = landingUrl;
-
-                alert('Register successfully. Please wait HR to approve it. \r\n After approval, you can pay with discout.');
+                storageService.setMessage('Thanks for your registration, please waiting for approval.');
+                location.href = "/pages/pending";
+                //alert('Register successfully. Please wait HR to approve it. \r\n After approval, you can pay with discout.');
             }else if(response.status === 1){
                 alert("You've already register, please go to message history and send 'discout' to get discount");
             }

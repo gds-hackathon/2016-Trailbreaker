@@ -20,7 +20,7 @@ router.get('/pages/transaction/wechat_id/:wechat_id/:transaction_id', function(r
 router.get('/pages/transaction/wechat_id/:wechat_id', function(req, res, next) {
   res.render('transaction', { title: 'Transaction' });
 });
-router.get('/pages/transaction/wechat_id/:wechat_id', function(req, res, next) {
+router.get('/pages/pending', function(req, res, next) {
   res.render('pending', { title: 'Pending' });
 });
 // registration end
