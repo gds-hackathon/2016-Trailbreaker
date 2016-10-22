@@ -1,44 +1,60 @@
 <% include ./layout/header.html %>
-<div class="container" ng-controller="TransactionContorller">
-<form class="form-horizontal">
-  <div class="form-group">
-    <label for="inputRetailer" ng-model = "transaction.vendor_id" class="col-sm-2 control-label" >Select Retailer</label>
-    <div class="col-sm-10">
-      <select  class="form-control" id="inputRetaielr" ng-model = "transaction.vendor_key" required >
-        
-  <option ng-repeat="x in vendors" value ="{{x.vendor_key}}">{{x.vendor_name}}</option>
-</select>
+	<div class="container" ng-controller="TransactionContorller">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="inputRetailer" ng-model="transaction.vendor_id" class="col-sm-2 control-label">
+          <h3>Select Retailer</h3>
+        </label>
+        <!--Vendor dropdown-->
+				<div class="col-sm-10">
+					<!--<select class="form-control" id="inputRetaielr" 
+          ng-model="transaction.vendor_key" required>
+            <option ng-repeat="x in vendors" value ="{{x.vendor_key}}" >
+              {{x.vendor_name + " (" + x.discount*100 + " %)"}}
+              </option>
+          </select>-->
+          <select class="form-control" id="inputRetaielr"  
+          ng-options="vendor as (vendor.vendor_name + ' (' + vendor.discount*100 + ' %)') for vendor in vendors" 
+          ng-model="selectedItem" ></select>
+				</div>
+			</div>
       
-    </div>
-  </div>
-    <div class="form-group">
-    
-    <label for="inputEmployee_key" class="col-sm-2 control-label" >Employee key</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputEmployee_key" ng-model = "transaction.employee_key" required>
-    </div>
- 
-  </div>
-  <div class="form-group">
-    
-    <label for="inputAmount" class="col-sm-2 control-label" >Amount</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputAmount" ng-model = "transaction.request_amount" required>
-    </div>
- 
-  </div>
-    <div class="form-group">
-    
-    <label for="inputAttandences" class="col-sm-2 control-label" >Attandences</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputAttandences" ng-model = "transaction.attandences" required>
-    </div>
- 
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button ng-click="submit()" class="btn btn-default">Submit</button>
-    </div>
-  </div>
-</form>
-</div>
+			<!--Amount-->
+			<div class="form-group">
+				<label for="inputAmount" class="col-sm-2 control-label">Amount</label>
+				<div class="col-sm-10">
+					<input type="number" class="form-control" id="inputAmount" ng-model="transaction.request_amount" required>
+				</div>
+			</div>
+
+			<!--Adjustment-->
+			<div class="form-group">
+				<label for="inputAdjustment" class="col-sm-2 control-label">Adjustment</label>
+				<div class="col-sm-10">
+          <input type="number" class="form-control" name="myDecimal" ng-init="transaction.adjustment=0"
+          placeholder="Decimal" ng-model="transaction.adjustment" *step="0.01"* />
+				</div>
+			</div>
+			<!--Actual amount-->
+			<div class="form-group">
+        <div ng-hide="true">{{transaction.request_actual_amount = count(transaction.request_amount,selectedItem.discount,transaction.adjustment) }}</div>
+				<label for="inputActualAmount" class="col-sm-2 control-label">Actual amount</label>
+				<div class="col-sm-10">
+					<input type="number" class="form-control" id="inputActualAmount" 
+          ng-model="transaction.request_actual_amount" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputAttandences" class="col-sm-2 control-label">Attandences</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="inputAttandences" ng-model="transaction.attandences" required>
+				</div>
+
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button ng-click="submit()" class="btn btn-default">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
