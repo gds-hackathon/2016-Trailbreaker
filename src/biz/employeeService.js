@@ -76,7 +76,7 @@ function employeeService(){
                 
                 var cmd = 'INSERT INTO `employee` (`first_name`,`last_name`,`phone`,`email_address`,`employee_id`,`employee_token`,`wechat_id`,`is_approved`,`is_enabled`,'
                 + '`approved_date`,`create_date`,`change_date`,`change_by`)'
-                + 'VALUES(?,?,?,?,?,?,?,0,0,now(),now(),now(),user());';
+                + 'VALUES(?,?,?,?,?,?,?,1,1,now(),now(),now(),user());';
                 console.log(cmd);
 
                 var params = [];

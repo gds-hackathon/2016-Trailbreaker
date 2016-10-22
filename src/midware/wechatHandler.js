@@ -20,7 +20,7 @@ var handler = function (req, res, next) {
               var service = new (require('../biz/employeeService'))();
               var params = {"params":{"wechat_id" : message.FromUserName}};
               service.findAll(params, function (err, rows){
-                var url = appConfig.BASE_URL + '/pages/transaction' + '?' + urlPart;
+                var url = appConfig.BASE_URL + '/pages/transaction/wechat_id/' +  message.FromUserName + '?' + urlPart;
                 var existed = (rows && rows.length  > 0);
 
                 if(!existed){
@@ -45,7 +45,7 @@ var handler = function (req, res, next) {
                 }//end of if-else
             }); //end else of findAll
       }else if(/^\s*(discout|dazhe|打折)/i.test(message.Content)){
-          var url = appConfig.BASE_URL + '/pages/transaction' + '?' + urlPart;
+          var url = appConfig.BASE_URL + '/pages/transaction/wechat_id/' +  message.FromUserName + '?' + urlPart;
           res.reply([
           {
             title: 'Discount',
