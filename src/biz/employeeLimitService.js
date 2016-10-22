@@ -6,7 +6,7 @@ var pool = require('../helpers/dbHelper')();
 
 function employeeLimitService(){
     this.getAllLimitsByEmployeeKey = function(employee_key, callback){
-        var cmd = 'select * from employee_limit where employee_key = ?';
+        var cmd = 'select * from employee_limit where employee_key = 1';
         var params = [];
 
         params.push(employee_key);
