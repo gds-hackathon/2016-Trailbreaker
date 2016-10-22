@@ -49,144 +49,153 @@ function transactionService(){
     this.insertTransaction = function(req, callback){
 
         var errors = [];
-        if(! req.body.employee_key){
-            errors.push('employee_key', 'invalid employee_key');
-        }
+
         if(! req.body.vendor_key){
             errors.push('vendor_key', 'invalid vendor_key');
         }
         if(! req.body.request_amount){
             errors.push('request_amount', 'invalid request_amount');
         }
+
+        var getEplParams = {"params":{"wechat_id": req.params.wechat_id}};
         
+        var svcObj = new EmployeeService();
+        svcObj.findAll(getEplParams, function(err, rows){
+            if(rows == null || rows.length ==0){
+                callback({status: 2, message : 'not register yet', errors: []}, null);
+            }else{
+                req.body.employee_key = rows[0].employee_key;
+                
+                vender = new VenderService();
+                vender.find({'params':{'vendor_key':req.body.vendor_key}}, function(err,row){
+                    var discount = row.discount || 0;
+                    //console.log('get :' + discount);
+                    var paid_amount = req.body.request_amount * (1 - discount);
 
-        vender = new VenderService();
-        vender.find({'params':{'vendor_key':req.body.vendor_key}}, function(err,row){
-            var discount = row.discount || 0;
-            //console.log('get :' + discount);
-            var paid_amount = req.body.request_amount * (1 - discount);
+                    //console.log('paid_amount' + paid_amount);
+                    var cmd = 'INSERT INTO `transaction`' +
+                        '(`employee_key`,' +
+                        '`attendances`,' +
+                        '`vendor_key`,' +
+                        '`discount`,' +
+                        '`transaction_date`,' +
+                        '`request_amount`,' +
+                        '`paid_amount`,' +
+                        '`transaction_status_key`,' +
+                        '`transaction_status_resone_key`,' +
+                        '`create_date`,' +
+                        '`change_date`,' +
+                        '`change_by`) ' +
+                        'VALUES' +
+                        '(?,?,?,?,now(),?,?,?,?,now(),now(),user())' +
+                        ';';
+                    
+                    //console.log(cmd);
 
-            //console.log('paid_amount' + paid_amount);
-            var cmd = 'INSERT INTO `transaction`' +
-                '(`employee_key`,' +
-                '`attendances`,' +
-                '`vendor_key`,' +
-                '`discount`,' +
-                '`transaction_date`,' +
-                '`request_amount`,' +
-                '`paid_amount`,' +
-                '`transaction_status_key`,' +
-                '`transaction_status_resone_key`,' +
-                '`create_date`,' +
-                '`change_date`,' +
-                '`change_by`) ' +
-                'VALUES' +
-                '(?,?,?,?,now(),?,?,?,?,now(),now(),user())' +
-                ';';
-            
-            //console.log(cmd);
+                    var params = [];
 
-            var params = [];
+                    params.push(req.body.employee_key);
+                    params.push(req.body.attendances);
+                    params.push(req.body.vendor_key);
+                    params.push(discount);
+                    params.push(req.body.request_amount);
+                    params.push(paid_amount);
+                    params.push(1);
+                    params.push(1);
 
-            params.push(req.body.employee_key);
-            params.push(req.body.attendances);
-            params.push(req.body.vendor_key);
-            params.push(discount);
-            params.push(req.body.request_amount);
-            params.push(paid_amount);
-            params.push(1);
-            params.push(1);
+                    console.log(params);
 
-            console.log(params);
+                    if(errors.length > 0){   
+                        var error = new Error('invalid parameters');
+                        error.errors = errors;  
 
-            if(errors.length > 0){   
-                var error = new Error('invalid parameters');
-                error.errors = errors;  
-
-                callback(error, {status:1, message:'invalid parameters'});                    
-            }
-            else if(!row.is_enabled)
-            {
-                var error = new Error('invalid status');
-                error.errors = errors;  
-
-                callback(error, {status:1, message:'vender is disabled'});  
-            }
-            else{
-
-                //TODO validate employee/vendor/coupon status && check limit
-                var employee  = new EmployeeService();
-
-                employee.find({'params':{'employee_key':req.body.employee_key}}, function(err,row){
-                    //console.log('is_enabled' + row.is_enabled)
-                    if(row.is_enabled != 1 )
+                        callback(error, {status:1, message:'invalid parameters'});                    
+                    }
+                    else if(!row.is_enabled)
                     {
                         var error = new Error('invalid status');
                         error.errors = errors;  
 
-                        callback(error, {status:1, message:'employee is disabled'});  
+                        callback(error, {status:1, message:'vender is disabled'});  
                     }
                     else{
-                        var employeeLimit = new EmployeeLimitService();
-                        employeeLimit.getAllLimitsByEmployeeKey(req.body.employee_key, function(err, data){
-                            //console.log('employee limit' + data);
-                            if(data)
+
+                        //TODO validate employee/vendor/coupon status && check limit
+                        var employee  = new EmployeeService();
+
+                        employee.find({'params':{'employee_key':req.body.employee_key}}, function(err,row){
+                            //console.log('is_enabled' + row.is_enabled)
+                            if(row.is_enabled != 1 )
                             {
-                                topThis.getTotalAmountByEmpolyeeKey(req.body.employee_key, function(err, rows){
-                                    var totalAmount = {};
-                                    //console.log('total amount' + rows);
-                                    totalAmount.Daily = rows.where(function(item){
-                                        //TODO filter out some sensitive fields.
-                                        return item.limit_period_key == 1;
-                                    })[0].total_amount;
-                                    totalAmount.Weekly = rows.where(function(item){
-                                        //TODO filter out some sensitive fields.
-                                        return item.limit_period_key == 2;
-                                    })[0].total_amount;
-                                    totalAmount.Monthly = rows.where(function(item){
-                                        //TODO filter out some sensitive fields.
-                                        return item.limit_period_key == 3;
-                                    })[0].total_amount;
+                                var error = new Error('invalid status');
+                                error.errors = errors;  
 
-console.log(data);
-                                    console.log('data.DailyLimit' + data.DailyLimit);
-                                    console.log('totalAmount.Daily' + totalAmount.Daily);
+                                callback(error, {status:1, message:'employee is disabled'});  
+                            }
+                            else{
+                                var employeeLimit = new EmployeeLimitService();
+                                employeeLimit.getAllLimitsByEmployeeKey(req.body.employee_key, function(err, data){
+                                    //console.log('employee limit' + data);
+                                    if(data)
+                                    {
+                                        topThis.getTotalAmountByEmpolyeeKey(req.body.employee_key, function(err, rows){
+                                            var totalAmount = {};
+                                            //console.log('total amount' + rows);
+                                            totalAmount.Daily = rows.where(function(item){
+                                                //TODO filter out some sensitive fields.
+                                                return item.limit_period_key == 1;
+                                            })[0].total_amount;
+                                            totalAmount.Weekly = rows.where(function(item){
+                                                //TODO filter out some sensitive fields.
+                                                return item.limit_period_key == 2;
+                                            })[0].total_amount;
+                                            totalAmount.Monthly = rows.where(function(item){
+                                                //TODO filter out some sensitive fields.
+                                                return item.limit_period_key == 3;
+                                            })[0].total_amount;
 
-                                    if(data.DailyLimit <  totalAmount.Daily)
-                                    {
-                                        var error = new Error('invalid status');
-                                        callback(error, {status:1, message:'execed daily limit'});
-                                    }else if(data.WeeklyLimit <  totalAmount.Weekly)
-                                    {
-                                        var error = new Error('invalid status');
-                                        callback(error, {status:1, message:'execed weekly limit'});
-                                    }else if(data.MonthlyLimit <  totalAmount.Monthly)
-                                    {
-                                        var error = new Error('invalid status');
-                                        callback(error, {status:1, message:'execed monthly limit'});
-                                    }
-                                    else
+        console.log(data);
+                                            console.log('data.DailyLimit' + data.DailyLimit);
+                                            console.log('totalAmount.Daily' + totalAmount.Daily);
+
+                                            if(data.DailyLimit <  totalAmount.Daily)
+                                            {
+                                                var error = new Error('invalid status');
+                                                callback(error, {status:1, message:'execed daily limit'});
+                                            }else if(data.WeeklyLimit <  totalAmount.Weekly)
+                                            {
+                                                var error = new Error('invalid status');
+                                                callback(error, {status:1, message:'execed weekly limit'});
+                                            }else if(data.MonthlyLimit <  totalAmount.Monthly)
+                                            {
+                                                var error = new Error('invalid status');
+                                                callback(error, {status:1, message:'execed monthly limit'});
+                                            }
+                                            else
+                                            {
+                                                pool.query(cmd, params, function(insertErr, data){
+                                                    console.log(data);
+                                                    callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
+                                                });
+                                            }
+                                        });
+                                    
+                                    }else
                                     {
                                         pool.query(cmd, params, function(insertErr, data){
                                             console.log(data);
                                             callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
                                         });
                                     }
-                                });
-                               
-                            }else
-                            {
-                                pool.query(cmd, params, function(insertErr, data){
-                                    console.log(data);
-                                    callback(insertErr, {status:0, message:'success', transaction_key: data.insertId, affectedRows: data.affectedRows});
+
                                 });
                             }
-
                         });
                     }
-                });
+                })
             }
-        })
+        });       
+
     };
 
     this.getTotalAmountByEmpolyeeKey = function(employeeKey, callback){
