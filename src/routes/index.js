@@ -10,6 +10,7 @@ router.get('/report', function(req, res, next) {
   res.render('report', { title: 'Express' });
 });
 
+// registration start
 router.get('/pages/registration', function(req, res, next) {
   res.render('registration', { title: 'Customer Registration' });
 });
@@ -19,6 +20,10 @@ router.get('/pages/transaction/wechat_id/:wechat_id/:transaction_id', function(r
 router.get('/pages/transaction/wechat_id/:wechat_id', function(req, res, next) {
   res.render('transaction', { title: 'Transaction' });
 });
+router.get('/pages/transaction/wechat_id/:wechat_id', function(req, res, next) {
+  res.render('pending', { title: 'Pending' });
+});
+// registration end
 
 //admin start
 router.get('/admin', function(req, res, next) {
