@@ -5,7 +5,7 @@ appConfig = {
     //enableCheckSignature : false,
 
     wechat: {
-        token : 'TODO'
+        token : 'fashionsingleAndJustD0It'
     }, 
     app_db : {
         //host: 'qa.mariadb.linsw.com',
